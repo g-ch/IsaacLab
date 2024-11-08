@@ -39,7 +39,7 @@ from omni.isaac.lab.utils.assets import ISAAC_NUCLEUS_DIR
 
 def design_scene():
     """Designs the scene by spawning ground plane, light, objects and meshes from usd files."""
-    # Ground-plane
+    # # Ground-plane
     cfg_ground = sim_utils.GroundPlaneCfg()
     cfg_ground.func("/World/defaultGroundPlane", cfg_ground)
 
@@ -57,6 +57,9 @@ def design_scene():
         radius=0.15,
         height=0.5,
         visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 0.0, 0.0)),
+        rigid_props=sim_utils.RigidBodyPropertiesCfg(),
+        mass_props=sim_utils.MassPropertiesCfg(mass=1.0),
+        collision_props=sim_utils.CollisionPropertiesCfg(),
     )
     cfg_cone.func("/World/Objects/Cone1", cfg_cone, translation=(-1.0, 1.0, 1.0))
     cfg_cone.func("/World/Objects/Cone2", cfg_cone, translation=(-1.0, -1.0, 1.0))
@@ -86,6 +89,11 @@ def design_scene():
     # spawn a usd file of a table into the scene
     cfg = sim_utils.UsdFileCfg(usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/Mounts/SeattleLabTable/table_instanceable.usd")
     cfg.func("/World/Objects/Table", cfg, translation=(0.0, 0.0, 1.05))
+
+    # print("Loading USD file...")
+    # cfg = sim_utils.UsdFileCfg(usd_path=f"/home/cc/chg_ws/isaac_lab/scenes/Kitchen_set/Kitchen_set_instanced.usd")
+    # cfg.func("/World/Scene", cfg, translation=(0.0, 0.0, 0.0))
+    # print("USD file Loaded!")
 
 
 def main():

@@ -91,7 +91,7 @@ def run_simulator(sim: sim_utils.SimulationContext, entities: dict[str, RigidObj
     # Simulate physics
     while simulation_app.is_running():
         # reset
-        if count % 250 == 0:
+        if count % 500 == 0:
             # reset counters
             sim_time = 0.0
             count = 0
@@ -100,7 +100,7 @@ def run_simulator(sim: sim_utils.SimulationContext, entities: dict[str, RigidObj
             # sample a random position on a cylinder around the origins
             root_state[:, :3] += origins
             root_state[:, :3] += math_utils.sample_cylinder(
-                radius=0.1, h_range=(0.25, 0.5), size=cone_object.num_instances, device=cone_object.device
+                radius=0.1, h_range=(0.5, 2.0), size=cone_object.num_instances, device=cone_object.device
             )
             # write root state to simulation
             cone_object.write_root_state_to_sim(root_state)
