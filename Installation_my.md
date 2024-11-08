@@ -56,6 +56,10 @@ in the conda environment you created. The above command should launch the simula
 
 
 ## Others
+### Set up vscode
+
+follow [this](https://isaac-sim.github.io/IsaacLab/main/source/overview/developer-guide/vs_code.html)
+
 
 ### Turn Xacro to URDF
 ```
@@ -67,3 +71,9 @@ rosrun xacro  xacro --inorder -o dinova_description/urdf/dinova.urdf dinova_desc
 python source/standalone/tools/convert_urdf.py  '/home/cc/chg_ws/isaac_lab/scenes/dingo_kinova/dinova.urdf' '/home/cc/chg_ws/isaac_lab/scenes/dinova_usd/dinova.usd' --make-instanceable --fix-base
 ```
 Check convert_urdf.py for more parameters that can be set.
+
+
+## TEST
+```
+python source/standalone/demos/dinova_multiple_robots_test2.py --enable_camera
+```
