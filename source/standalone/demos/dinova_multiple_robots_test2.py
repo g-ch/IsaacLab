@@ -1,15 +1,10 @@
-# Copyright (c) 2022-2024, The Isaac Lab Project Developers.
-# All rights reserved.
-#
-# SPDX-License-Identifier: BSD-3-Clause
+# @Author: Clarence Chen
+# @Date: 2024-11-07
 
 """
-This script demonstrates how to create a simple environment with a cartpole. It combines the concepts of
-scene, action, observation and event managers to create an environment.
+This script spawns two robots in the environment and controls them using different control modes.
+Each robot is mounted with a camera and the images from the camera are accessed.
 """
-
-"""Launch Isaac Sim Simulator first."""
-
 
 import argparse
 
@@ -127,10 +122,10 @@ class DinovaSceneCfg(InteractiveSceneCfg):
     )
 
     # Dinova
-    if args_cli.control_mode != "velocity":
+    if args_cli.control_mode != "velocity": # position control or effort control
         robot1: ArticulationCfg = DINOVA_CONFIG.replace(prim_path="{ENV_REGEX_NS}/Robot1")
         robot2: ArticulationCfg = DINOVA_CONFIG.replace(prim_path="{ENV_REGEX_NS}/Robot2")
-    else:
+    else: # velocity control
         robot1: ArticulationCfg = DINOVA_VELOCITY_CONFIG.replace(prim_path="{ENV_REGEX_NS}/Robot1")
         robot2: ArticulationCfg = DINOVA_VELOCITY_CONFIG.replace(prim_path="{ENV_REGEX_NS}/Robot2")
 
@@ -249,22 +244,22 @@ def main():
             print("Received shape of depth image: ", env.scene["camera2"].data.output["distance_to_image_plane"].shape)
 
             # # render the camera image
-            # rgb_image = env.scene["camera"].data.output["rgb"]
-            # rgb_image = rgb_image.squeeze(0)
-            # rgb_image = rgb_image.cpu().numpy()
-            # rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
+            rgb_image = env.scene["camera1"].data.output["rgb"]
+            rgb_image = rgb_image.squeeze(0)
+            rgb_image = rgb_image.cpu().numpy()
+            rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
 
-            # depth_image = env.scene["camera"].data.output["distance_to_image_plane"]
-            # depth_image = depth_image.squeeze(0)
-            # depth_image = depth_image.cpu().numpy()
-            # max_val = np.max(depth_image)
-            # if max_val > 0 and max_val < 1000:  # Ensure max is not zero to avoid division by zero
-            #     depth_image = (depth_image / max_val) * 255
-            # else:
-            #     depth_image = np.zeros_like(depth_image)
-            # depth_image = depth_image.astype(np.uint8)
+            depth_image = env.scene["camera1"].data.output["distance_to_image_plane"]
+            depth_image = depth_image.squeeze(0)
+            depth_image = depth_image.cpu().numpy()
+            max_val = np.max(depth_image)
+            if max_val > 0 and max_val < 1000:  # Ensure max is not zero to avoid division by zero
+                depth_image = (depth_image / max_val) * 255
+            else:
+                depth_image = np.zeros_like(depth_image)
+            depth_image = depth_image.astype(np.uint8)
 
-            # print("Show image with cv2.imshow is not working in this environment")
+            print("Show image with cv2.imshow is not working in this environment")
 
             # update counter
             count += 1
