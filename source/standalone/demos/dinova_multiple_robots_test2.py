@@ -12,7 +12,7 @@ from omni.isaac.lab.app import AppLauncher
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Tutorial on creating a cartpole base environment.")
-parser.add_argument("--num_envs", type=int, default=1, help="Number of environments to spawn.")
+parser.add_argument("--num_envs", type=int, default=5, help="Number of environments to spawn.")
 parser.add_argument("--control_mode", type=str, default="velocity", help="Control mode for the robot. Choice, 'effort' or 'velocity' or 'position'.")
 
 # append AppLauncher cli args
@@ -141,7 +141,7 @@ class DinovaSceneCfg(InteractiveSceneCfg):
         spawn=sim_utils.PinholeCameraCfg(
             focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
         ),
-        offset=CameraCfg.OffsetCfg(pos=(0.510, 0.0, 0.015), rot=(0.5, -0.5, 0.5, -0.5), convention="ros"),
+        offset=CameraCfg.OffsetCfg(pos=(0, 0.0, 0.5), rot=(1, 0, 0, 0), convention="ros"),
     )
 
     camera2 = CameraCfg(
@@ -153,7 +153,7 @@ class DinovaSceneCfg(InteractiveSceneCfg):
         spawn=sim_utils.PinholeCameraCfg(
             focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 1.0e5)
         ),
-        offset=CameraCfg.OffsetCfg(pos=(0.510, 0.0, 0.015), rot=(0.5, -0.5, 0.5, -0.5), convention="ros"),
+        offset=CameraCfg.OffsetCfg(pos=(0, 0.0, 0.5), rot=(1, 0, 0, 0), convention="ros"),
     )
 
 
@@ -248,16 +248,22 @@ def main():
             rgb_image = rgb_image.squeeze(0)
             rgb_image = rgb_image.cpu().numpy()
             rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
+            cv2.imwrite(f"/home/cc/chg_ws/isaac_lab/IsaacLab/temp/rgb_image_{count}.png", rgb_image)
 
             depth_image = env.scene["camera1"].data.output["distance_to_image_plane"]
+            print("depth_image: ", depth_image)
+
             depth_image = depth_image.squeeze(0)
             depth_image = depth_image.cpu().numpy()
-            max_val = np.max(depth_image)
-            if max_val > 0 and max_val < 1000:  # Ensure max is not zero to avoid division by zero
-                depth_image = (depth_image / max_val) * 255
-            else:
-                depth_image = np.zeros_like(depth_image)
+            max_val = 25.5
+
+            # Set inf to max_val 
+            depth_image[depth_image == np.inf] = max_val
+            depth_image = np.clip(depth_image, 0, max_val)
+            depth_image = (depth_image / 25.5) * 255
             depth_image = depth_image.astype(np.uint8)
+   
+            cv2.imwrite(f"/home/cc/chg_ws/isaac_lab/IsaacLab/temp/depth_image_{count}.png", depth_image)
 
             print("Show image with cv2.imshow is not working in this environment")
 
