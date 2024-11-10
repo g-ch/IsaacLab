@@ -54,6 +54,11 @@ python source/standalone/tutorials/00_sim/create_empty.py
 ```
 in the conda environment you created. The above command should launch the simulator and display a window with a black ground plane. You can exit the script by pressing Ctrl+C on your terminal.
 
+### Enable ROS1
+Refer to [this site](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_ros.html#isaac-sim-app-enable-ros). What you need to do is:
+Open isaacsim (using omniverse-launcher or run a standalone script) and go to the extension manager menu Window->Extensions and search for ROS Bridge.
+Enable ROS bridge (for ROS1) in ISAAC Sim (though it is said to be deprecated) and select "AUTOLOAD".
+
 
 ## Others
 ### Set up vscode

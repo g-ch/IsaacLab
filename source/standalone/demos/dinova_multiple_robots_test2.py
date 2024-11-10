@@ -12,7 +12,7 @@ from omni.isaac.lab.app import AppLauncher
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Tutorial on creating a cartpole base environment.")
-parser.add_argument("--num_envs", type=int, default=5, help="Number of environments to spawn.")
+parser.add_argument("--num_envs", type=int, default=1, help="Number of environments to spawn.")
 parser.add_argument("--control_mode", type=str, default="velocity", help="Control mode for the robot. Choice, 'effort' or 'velocity' or 'position'.")
 
 # append AppLauncher cli args
